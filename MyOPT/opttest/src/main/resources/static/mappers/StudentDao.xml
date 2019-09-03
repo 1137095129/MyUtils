@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myopttest.opttest.dao.StudentDao">
+    <select id="findById" resultType="com.myopttest.opttest.domain.Student">
+        select * from student where id=#{uid}
+    </select>
+    <select id="findAll" resultType="com.myopttest.opttest.domain.Student">
+        select * from student
+    </select>
+    <select id="findByPage" resultType="Student">
+        select TOP #{pageCount} * from student where id not in (select TOP #{pageOffSetCount} from student order by Uid) order by Uid;
+    </select>
+    <select id="findByUserName" resultType="Student">
+        select * from student where UserName = #{userName}
+    </select>
+    <select id="findByUserCard" resultType="Student">
+        select * from student where Usercard = #{userCard}
+    </select>
+    <select id="getTotalCount" resultType="int">
+        select count(Uid) from student
+    </select>
+    <insert id="addNewStudent">
+        <foreach collection="students" item="temp" separator=";" index="index" open="" close="">
+            insert into student(allow,UserName,Password,Usercard) values (
+            #{temp.allow}
+            #{temp.userName},
+            #{temp.passwrod},
+            #{temp.usercard}
+            )
+        </foreach>
+    </insert>
+    <update id="updateStudentInfo">
+        <foreach collection="students" index="index" item="temp" separator=";" open="" close="">
+            update student
+            <set>
+                allow=#{temp.allow},
+                UserName=#{temp.userName},
+                Password=#{temp.password},
+                Usercard=#{temp.usercard}
+            </set>
+            whenever Uid = #{temp.uid}
+        </foreach>
+    </update>
+    <delete id="deleteStudentInfo">
+        <foreach collection="students" index="index" item="temp" separator=";" close="" open="">
+            delete from student where Uid=#{temp.uid}
+        </foreach>
+    </delete>
+</mapper>

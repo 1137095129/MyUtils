@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:sqlserver://127.0.0.1:1433;databaseName=opt
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: admin123456
+mybatis:
+  mapper-locations: classpath:static/mappers/*.xml
+  type-aliases-package: com.myopttest.opttest.domain
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+logging:
+  level:
+    com.myopttest.opttest.dao: debug

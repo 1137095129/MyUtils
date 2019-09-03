@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myopttest.opttest.dao.OptLogDao">
+    <select id="findById" resultType="OptLog">
+        select * from optlog where id=#{id}
+    </select>
+    <select id="findAll" resultType="OptLog">
+        select * from optlog
+    </select>
+    <select id="findByKind" resultType="OptLog">
+        select * from optlog where kind=#{value.kind}
+    </select>
+    <select id="findByTime" resultType="OptLog">
+        select * from optlog where  #{value.beforeTime} > time and time > #{value.afterTime}
+    </select>
+    <select id="findByKindAndTime" resultType="OptLog">
+        select * from optlog where kind=#{value.kind} and time > CONVERT(DATETIME ,#{value.afterTime},120) and CONVERT(DATETIME ,#{value.beforeTime},120) > time
+    </select>
+    <insert id="addLog">
+        insert into optlog([user],content,kind) values(#{user},#{content},#{kind})
+    </insert>
+</mapper>
