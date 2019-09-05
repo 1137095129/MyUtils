@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserInfoDao {
 
-    UserInfo findUserInfoByUserId(int userId);
+    UserInfo findUserInfoByUserId(Integer userId);
 
 }

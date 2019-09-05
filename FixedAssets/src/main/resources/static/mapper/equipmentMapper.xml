@@ -6,17 +6,13 @@
     <resultMap id="equipmentResultMap" type="Equipment">
         <id column="equipment_id" property="equipmentId"></id>
         <result column="equipment_no" property="equipmentNo"></result>
-        <association property="kind" javaType="Kind" column="kind_id" select="com.thhy.fixedassets.dao.KindDao.findKindNameByKindId">
-            <id column="kind_id" property="kindId"></id>
-            <result column="kind_name" property="kindName"></result>
-        </association>
         <association property="model" javaType="Model" column="model_id" select="com.thhy.fixedassets.dao.KindDao.findModelAll">
             <id column="model_id" property="modelId"></id>
             <result column="model_name" property="modelName"></result>
         </association>
     </resultMap>
     <select id="findEquipmentByCondition" resultMap="equipmentResultMap">
-        select equipment_id,equipment_no,kind_id,model_id,sn_no
+        select equipment_id,equipment_no,model_id,sn_no,status_no
         from equipment
         <where>
         equipment_id in
@@ -40,6 +36,7 @@
                 and sn_no like #{snNo}
             </if>
         </where>
+        limit #{page.offSetCount},#{page.pageCount}
     </select>
     <update id="lendORReturn">
         update equipment
@@ -67,6 +64,12 @@
         select equipment_id,sn_no,user_id,add_time,update_time
         from equipment
         where kind_id=#{kindId}
+    </select>
+    <select id="findLibraryCountByKindId" resultType="INTEGER">
+        select count(equipment_id) from equipment where model_id=#{modelId} and user_id==null
+    </select>
+    <select id="findTotalCountByKindId" resultType="INTEGER">
+        select count(equipment_id) from equipment where model_id=#{modelId}
     </select>
     <insert id="addNewEquipment">
         insert into

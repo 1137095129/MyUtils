@@ -10,4 +10,6 @@ public interface KindService {
 
     Kind findKindAllByKindId(int kindId);
 
+    void addNewKind(String kindName);
+
 }

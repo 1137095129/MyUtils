@@ -3,7 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.thhy.fixedassets.dao.ModelDao">
-    <select id="findModelAll" resultType="Model">
+    <resultMap id="findKind" type="Model">
+        <id column="model_id" property="modelId"></id>
+        <result column="model_name" property="modelName"></result>
+        <result column="specifications" property="specifications"></result>
+        <association property="kind" javaType="Kind" column="kind_id" select="com.thhy.fixedassets.dao.KindDao.findKindNameByKindId">
+            <id column="kind_id" property="kindId"></id>
+            <result column="kind_name" property="kindName"></result>
+        </association>
+    </resultMap>
+    <select id="findModelAll" resultMap="findKind">
         <if test="modelId!=null">
             select model_id,model_name from model where model_id=#{modelId}
         </if>

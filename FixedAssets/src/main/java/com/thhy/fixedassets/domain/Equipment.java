@@ -11,9 +11,6 @@ public class Equipment {
     //设备S/N号
     private String snNo;
 
-    //设备种类
-    private Kind kind;
-
     //设备型号
     private Model model;
 
@@ -49,14 +46,6 @@ public class Equipment {
 
     public void setSnNo(String snNo) {
         this.snNo = snNo;
-    }
-
-    public Kind getKind() {
-        return kind;
-    }
-
-    public void setKind(Kind kind) {
-        this.kind = kind;
     }
 
     public Model getModel() {
@@ -114,4 +103,5 @@ public class Equipment {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
 }

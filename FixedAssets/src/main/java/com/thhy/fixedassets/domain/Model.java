@@ -14,6 +14,9 @@ public class Model {
     //设备规格
     private String specifications;
 
+    //设备类型
+    private Kind kind;
+
     //设备价格
     private Float price;
 
@@ -69,5 +72,13 @@ public class Model {
 
     public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Kind getKind() {
+        return kind;
+    }
+
+    public void setKind(Kind kind) {
+        this.kind = kind;
     }
 }

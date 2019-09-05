@@ -2,9 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress ALL -->
 <mapper namespace="com.thhy.fixedassets.dao.KindDao">
     <select id="findKindNameByKindId" resultType="Kind">
-        select kind_name from kind
+        select kind_id,kind_name from kind
         <where>
             <if test="kindId!=null">
                 kind_id=#{kindId}
@@ -14,4 +15,8 @@
     <select id="findKindAllByKindId" resultType="Kind">
         select * from kind where kind_id=#{kindId}
     </select>
+    <insert id="addNewKind">
+        insert into kind(kind_name)
+        values (kindName)
+    </insert>
 </mapper>

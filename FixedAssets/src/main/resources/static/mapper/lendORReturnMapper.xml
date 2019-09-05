@@ -12,13 +12,21 @@
     <select id="findLendAndReturnByEquipmentId" resultType="LendORReturn">
         select rl_id,user_id,lend_id,lendorreturn_date
          from lendorreturn
-         where is_lendorreturn_permissible=1 and equipment_id=#{equipmentId}
+         where is_lendorreturn_permissible=1 and equipment_id=#{equipmentId} and lendorreturn_approval_admin!=null
+         and lendorreturn_approval_date!=null
     </select>
     <!-- 申请借还 -->
     <insert id="applyNewLendORReturn">
-        insert into lendorreturn(user_id,equipment_id,lendorreturn_describe,lend_id)
-        values
-        (#{userId},#{equipmentId},#{lendorreturnDescribe},#{lendorreturn.rlId})
+        <if test="lendId!=null">
+            insert into lendorreturn(user_id,equipment_id,lendorreturn_describe,lend_id)
+            values
+            (#{userId},#{equipmentId},#{lendorreturnDescribe},#{lendorreturn.lendId})
+        </if>
+        <if test="lendId==null">
+            insert into lendorreturn(user_id,equipment_id,lendorreturn_describe)
+            values
+            (#{userId},#{equipmentId},#{lendorreturnDescribe})
+        </if>
     </insert>
     <!-- 审核借还 -->
     <update id="examineLendORReturn">

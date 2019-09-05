@@ -12,4 +12,6 @@ public interface KindDao {
 
     Kind findKindAllByKindId(int kindId);
 
+    void addNewKind(String kindName);
+
 }
