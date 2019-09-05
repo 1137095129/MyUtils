@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thhy.fixedassets.dao.EquipmentDao">
+    <resultMap id="equipmentResultMap" type="Equipment">
+        <id column="equipment_id" property="equipmentId"></id>
+        <result column="equipment_no" property="equipmentNo"></result>
+        <association property="kind" javaType="Kind" column="kind_id" select="com.thhy.fixedassets.dao.KindDao.findKindNameByKindId">
+            <id column="kind_id" property="kindId"></id>
+            <result column="kind_name" property="kindName"></result>
+        </association>
+        <association property="model" javaType="Model" column="model_id" select="com.thhy.fixedassets.dao.KindDao.findModelAll">
+            <id column="model_id" property="modelId"></id>
+            <result column="model_name" property="modelName"></result>
+        </association>
+    </resultMap>
+    <select id="findEquipmentByCondition" resultMap="equipmentResultMap">
+        select equipment_id,equipment_no,kind_id,model_id,sn_no
+        from equipment
+        <where>
+        equipment_id in
+        (select equipment_id
+        from lendorreturn
+        where
+        user_id=#{userId} and lendorreturn_date!=null and lend_id=null)
+            <if test="kindId!=null">
+                and kind_id=#{kindId}
+            </if>
+            <if test="modelId!=null">
+                and model_id=#{modelId}
+            </if>
+            <if test="statusNo!=null">
+                and status_no=#{statusNo}
+            </if>
+            <if test="equipmentNo!=null">
+                and equipment_no like #{equipmentNo}
+            </if>
+            <if test="snNo!=null">
+                and sn_no like #{snNo}
+            </if>
+        </where>
+    </select>
+    <update id="lendORReturn">
+        update equipment
+        set user_id=#{userId}
+    </update>
+    <select id="findEquipment" resultType="Equipment">
+        select equipment_id,sn_no,kind_id,model_id from equipment
+        <where>
+            <if test="modelId!=null">
+                and model_id=#{modelId}
+            </if>
+            <if test="kindId!=null">
+                and kind_id=#{kindId}
+            </if>
+            <if test="minPrice!=null">
+                and price>#{minPrice}
+            </if>
+            <if test="maxPrice!=null">
+                and #{maxPrice}>price
+            </if>
+        </where>
+        limit #{page.offSetCount},#{page.pageCount}
+    </select>
+    <select id="findEquipmentByKind" resultType="Equipment">
+        select equipment_id,sn_no,user_id,add_time,update_time
+        from equipment
+        where kind_id=#{kindId}
+    </select>
+    <insert id="addNewEquipment">
+        insert into
+        equipment(sn_no,kind_id,model_id,equipment_describe,equipment_no)
+        values(#{snNo},#{kindId},#{modelId},#{equipmentDescribe},#{equipmentNo})
+    </insert>
+    <update id="updateStatus">
+        update equipment
+        set status_no = #{statusNo}
+    </update>
+</mapper>

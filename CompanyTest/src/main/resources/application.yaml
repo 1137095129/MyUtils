@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=userInfo
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: admin123456
+mybatis:
+  type-aliases-package: com.wjf.companytest.domain
+  mapper-locations: classpath:static/mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true

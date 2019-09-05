@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thhy.fixedassets.dao.ModelDao">
+    <select id="findModelAll" resultType="Model">
+        <if test="modelId!=null">
+            select model_id,model_name from model where model_id=#{modelId}
+        </if>
+        <if test="modelId==null">
+            select model_id,model_name from model
+        </if>
+    </select>
+    <insert id="addNewModel">
+        insert into model(model_id,model_name,specifications,price,add_time,update_time)
+        values (#{modelId},#{modelName},#{specifications},#{price},now(),now())
+    </insert>
+    <update id="updateModelByModelId">
+        update model set model_name=#{modelName},specifications=#{specifications},price=#{price},update_time=now()
+    </update>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thhy.fixedassets.dao.LendORReturnDao">
+    <select id="findLendByUserInfo" resultType="LendORReturn">
+        select rl_id,equipment_id from lendorreturn where user_id=#{userId} and lendorreturn_date!=null and lend_id=null
+    </select>
+    <select id="findReturnByRLId" resultType="LendORReturn">
+        select rl_id from lendorreturn where lend_id=#{rlId}
+    </select>
+    <select id="findLendAndReturnByEquipmentId" resultType="LendORReturn">
+        select rl_id,user_id,lend_id,lendorreturn_date
+         from lendorreturn
+         where is_lendorreturn_permissible=1 and equipment_id=#{equipmentId}
+    </select>
+    <!-- 申请借还 -->
+    <insert id="applyNewLendORReturn">
+        insert into lendorreturn(user_id,equipment_id,lendorreturn_describe,lend_id)
+        values
+        (#{userId},#{equipmentId},#{lendorreturnDescribe},#{lendorreturn.rlId})
+    </insert>
+    <!-- 审核借还 -->
+    <update id="examineLendORReturn">
+        update lendorreturn
+        set lendorreturn_describe=#{lendorreturnDescribe},is_lendorreturn_permissible=#{isLendorreturnPermissible},
+        refuse_lendorreturn_reason=#{refuseLendorreturnReason},lendorreturn_approval_admin=#{lendorreturnApprovalAdmin},
+        lendorreturn_approval_date=#{lendorreturnApprovalDate}
+        where rl_id=#{rlId}
+    </update>
+    <!-- 借出/归还 -->
+    <update id="lendORReturn">
+        update lendorreturn
+        set lendorreturn_date=now()
+        where equipment_id=#{equipmentId} and user_id=#{userId}
+        and is_lendorreturn_permissible=1 and lendorreturn_date=null
+    </update>
+</mapper>
